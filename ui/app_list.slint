@@ -11,11 +11,6 @@ export component AppListWindow inherits Window {
     in-out property <string> proxy-status: "Disconnected";
     callback row-clicked(int);
 
-    on-close-requested => {
-        root.window-close-requested();
-        accept;
-    }
-
     width: 680px;
     height: 820px;
     title: "MacProx — System Tunnel (sshuttle)";
