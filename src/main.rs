@@ -27,14 +27,16 @@ impl TunnelState {
     }
 
     async fn disconnect(&self) {
-        // kill process
-        if let Some(mut child) = self.child.lock().unwrap().take() {
+        let child_opt: Option<Child> = { self.child.lock().unwrap().take() };
+
+        if let Some(mut child) = child_opt {
             let _ = child.kill().await;
             let _ = child.wait().await;
         }
 
-        // cleanup askpass script
-        if let Some(p) = self.askpass_path.lock().unwrap().take() {
+        let askpass_opt: Option<PathBuf> = { self.askpass_path.lock().unwrap().take() };
+
+        if let Some(p) = askpass_opt {
             let _ = fs::remove_file(p);
         }
     }
