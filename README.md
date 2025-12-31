@@ -40,8 +40,6 @@ The core tunnel functionality is stable; UI and per-app features are evolving.
 make deps
 ```
 
-````
-
 This command will:
 
 - Use `brew install sshuttle` if Homebrew is available
@@ -94,4 +92,3 @@ This version is:
 - contains practical security & troubleshooting info
 - ready to be used as your project's `README.md`
 ```
-````
