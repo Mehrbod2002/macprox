@@ -1,0 +1,143 @@
+import { Button, LineEdit, ListView } from "std-widgets.slint";
+
+export struct AppRow { name: string, path: string }
+
+export component AppListWindow inherits Window {
+    in-out property <[AppRow]> apps;
+    callback connect-proxy(string, string, string, string, string);
+    callback disconnect-proxy();
+    in-out property <bool> proxy-connected: false;
+    in-out property <string> proxy-status: "Disconnected";
+    callback row-clicked(int);
+
+    width: 680px;
+    height: 820px;
+    title: "MacProx — System Tunnel (sshuttle)";
+
+    VerticalLayout {
+        padding: 20px;
+        spacing: 20px;
+
+        // Proxy Configuration Section
+        VerticalLayout {
+            spacing: 12px;
+
+            Text {
+                text: "System-wide Tunnel via sshuttle (transparent routing)";
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            // Form rows: label on left, input on right
+            VerticalLayout {
+                spacing: 10px;
+
+                HorizontalLayout {
+                    spacing: 10px;
+                    alignment: end;
+                    Text { text: "Remark (optional)"; width: 150px; }
+                    remark_input := LineEdit { placeholder-text: "My Server"; width: 300px; }
+                }
+                HorizontalLayout {
+                    spacing: 10px;
+                    alignment: end;
+                    Text { text: "Server Address"; width: 150px; }
+                    server_input := LineEdit { placeholder-text: "1.2.3.4 or host.com"; width: 300px; }
+                }
+                HorizontalLayout {
+                    spacing: 10px;
+                    alignment: end;
+                    Text { text: "Port"; width: 150px; }
+                    port_input := LineEdit { placeholder-text: "22"; width: 300px; }
+                }
+                HorizontalLayout {
+                    spacing: 10px;
+                    alignment: end;
+                    Text { text: "Username"; width: 150px; }
+                    user_input := LineEdit { placeholder-text: "root or user"; width: 300px; }
+                }
+                HorizontalLayout {
+                    spacing: 10px;
+                    alignment: end;
+                    Text { text: "Password (optional)"; width: 150px; }
+                    pass_input := LineEdit {
+                        placeholder-text: "Leave empty for key auth";
+                        width: 300px;
+                        input-type: password;
+                    }
+                }
+            }
+
+            HorizontalLayout {
+                alignment: center;
+                Button {
+                    text: proxy-connected ? "Disconnect" : "Connect Proxy";
+                    primary: true;
+                    width: 200px;
+                    clicked => {
+                        if (proxy-connected) {
+                            root.disconnect-proxy();
+                        } else {
+                            root.connect-proxy(
+                                remark_input.text,
+                                server_input.text,
+                                port_input.text,
+                                user_input.text,
+                                pass_input.text
+                            );
+                        }
+                    }
+                }
+            }
+
+            Text {
+                text: proxy-status;
+                color: proxy-connected ? #4caf50 : #f44336;
+                font-size: 14px;
+                horizontal-alignment: center;
+            }
+        }
+
+        // Divider
+        Rectangle {
+            height: 1px;
+            background: #404040;
+        }
+
+        // App List Section
+        Text {
+            text: "Installed Applications";
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        ListView {
+            for app[index] in apps: Rectangle {
+                height: 56px;
+                border-width: 1px;
+                border-color: #404040;
+                background: touch.has-hover ? #303030 : @linear-gradient(0deg, #202020, #282828);
+                touch := TouchArea {
+                    clicked => {
+                        root.row-clicked(index);
+                    }
+                }
+                VerticalLayout {
+                    padding: 10px;
+                    alignment: start;
+                    Text {
+                        text: app.name;
+                        font-size: 16px;
+                        overflow: elide;
+                    }
+                    Text {
+                        text: app.path;
+                        font-size: 11px;
+                        opacity: 0.7;
+                        overflow: elide;
+                    }
+                }
+            }
+        }
+    }
+}
