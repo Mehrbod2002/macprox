@@ -6,9 +6,15 @@ export component AppListWindow inherits Window {
     in-out property <[AppRow]> apps;
     callback connect-proxy(string, string, string, string, string);
     callback disconnect-proxy();
+    callback window-close-requested();
     in-out property <bool> proxy-connected: false;
     in-out property <string> proxy-status: "Disconnected";
     callback row-clicked(int);
+
+    on-close-requested => {
+        root.window-close-requested();
+        accept;
+    }
 
     width: 680px;
     height: 820px;

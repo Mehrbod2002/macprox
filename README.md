@@ -1,4 +1,3 @@
-````markdown
 # MacProx
 
 ![CI](https://github.com/mehrbod2002/macprox/actions/workflows/ci.yml/badge.svg)
@@ -18,8 +17,13 @@ Creates a transparent VPN-like tunnel through an SSH server — no browser exten
 - Shows current connection status
 - (Future) Lists installed applications (potential for per-app routing)
 
-> **Note**: This is **not** a SOCKS proxy toggler.  
+> **Note**: This is **not** a SOCKS proxy toggler.
 > It routes **all system traffic** through the SSH tunnel (like a lightweight VPN).
+
+## Project Status
+
+MacProx is under active development.  
+The core tunnel functionality is stable; UI and per-app features are evolving.
 
 ## Requirements
 
@@ -35,6 +39,7 @@ Creates a transparent VPN-like tunnel through an SSH server — no browser exten
 # Install sshuttle (the only real dependency)
 make deps
 ```
+
 ````
 
 This command will:
@@ -77,9 +82,7 @@ The release binary will appear in `target/release/macprox`
 
 ## License
 
-[MIT](LICENSE) (or whatever you choose)
-
-Made with ❤️ and too much caffeine
+[MIT](LICENSE)
 
 ```
 
@@ -91,3 +94,4 @@ This version is:
 - contains practical security & troubleshooting info
 - ready to be used as your project's `README.md`
 ```
+````

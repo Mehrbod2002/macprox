@@ -243,13 +243,12 @@ async fn main() -> Result<(), slint::PlatformError> {
 
     {
         let state = state.clone();
-        ui.on_close_requested(move || {
+        ui.on_window_close_requested(move || {
             let state = state.clone();
             slint::spawn_local(async move {
                 state.disconnect().await;
             })
             .unwrap();
-            slint::CloseRequestResponse::HideWindow
         });
     }
 
